@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Productos - Skyrim Shop</title>
+    <style>
+        /* Estilos inline para los botones CRUD integrados en el diseño */
+        .crud-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .btn-crud {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .btn-edit {
+            background-color: #f39c12;
+        }
+
+        .btn-delete {
+            background-color: #e74c3c;
+        }
+
+        .btn-create {
+            background-color: #27ae60;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        #div-admin {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <input type="text" placeholder="Buscar producto... (Funcionalidad JS pendiente)"></input>
+        <div id="div-admin">
+            <a href="/productos/crear" class="btn-create">Crear Producto</a>
+            <a href="/admin" id="login-admin"
+                style="text-decoration: none; color: inherit;"><button>Administrador</button></a>
+        </div>
+    </header>
+    <section>
+        <div id="section-productos">
+            <% if (productos && productos.length> 0) { %>
+                <% productos.forEach(prod=> { %>
+                    <div class="card-producto">
+                        <!-- Asumimos que la imagen viene en ruta_img o usamos un placeholder -->
+                        <img src="<%= prod.ruta_img || '/img/categorias/accesorios.png' %>" alt="<%= prod.nombre %>">
+                        <div class="info-producto">
+                            <h3>
+                                <%= prod.nombre %>
+                            </h3>
+                            <p class="precio">$<%= prod.precio %>
+                            </p>
+                            <p class="stock">Stock: <%= prod.stock %>
+                            </p>
+                            <div class="crud-buttons">
+                                <a href="/productos/modificar?id=<%= prod.id %>" class="btn-crud btn-edit">Editar</a>
+                                <a href="/productos/eliminar?id=<%= prod.id %>" class="btn-crud btn-delete">Eliminar</a>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+                        <% } else { %>
+                            <p style="color: white; text-align: center;">No hay productos disponibles.</p>
+                            <% } %>
+        </div>
+    </section>
+
+    <%- include("partials/footer") %>

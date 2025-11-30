@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/canasto.css">
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/fetch.js"></script>
+    <title>Digital Dragon</title>
+</head>
+
+<body>
+    <header>
+        <div class="header-controls">
+            <input type="text" id="input-user-name" placeholder="Nombre del Usuario">
+            <input type="text" placeholder="Buscar producto...">
+        </div>
+    </header>
+    <section>
+        <div id="section-productos"></div>
+    </section>
+
+    <div id="cart-summary" class="cart-summary hidden">
+        <div class="cart-header" id="cart-toggle">
+            <div class="cart-info">
+                <span id="cart-count">Cant artículos: 0</span>
+                <span id="cart-total">Costo total: 0🟡</span>
+            </div>
+            <span class="toggle-icon">⬆️</span>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Items will be injected here -->
+        </div>
+        <div class="cart-actions">
+            <button id="btn-confirm-purchase">Confirmar Compra</button>
+        </div>
+    </div>
+</body>
+
+</html>

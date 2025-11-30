@@ -1,0 +1,90 @@
+<!-- filepath: src/views/update.ejs -->
+<%- include("partials/head") %>
+
+<div class="crud-container">
+  <div class="crud-header">
+    <h1>✏️ Editar Producto #<%= producto.id %></h1>
+    <a href="/admin" class="btn-admin btn-back">← Volver</a>
+  </div>
+
+  <% if (error) { %>
+    <div style="background: #c62828; color: white; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+      <strong>❌ Error:</strong> <%= error %>
+    </div>
+  <% } %>
+
+  <form method="POST" action="/admin/editar" class="crud-form">
+    <input type="hidden" name="id" value="<%= producto.id %>">
+
+    <div class="form-group">
+      <label for="categoria_id">Categoría</label>
+      <select id="categoria_id" name="categoria_id">
+        <option value="1" <%= producto.categoria_id == 1 ? 'selected' : '' %>>Armaduras</option>
+        <option value="2" <%= producto.categoria_id == 2 ? 'selected' : '' %>>Accesorios</option>
+        <option value="3" <%= producto.categoria_id == 3 ? 'selected' : '' %>>Armas</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="nombre">Nombre del Producto *</label>
+      <input 
+        type="text" 
+        id="nombre" 
+        name="nombre" 
+        value="<%= producto.nombre %>"
+        required
+      >
+    </div>
+
+    <div class="form-group full-width">
+      <label for="descripcion">Descripción</label>
+      <textarea 
+        id="descripcion" 
+        name="descripcion" 
+        rows="4"
+      ><%= producto.descripcion || '' %></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="precio">Precio ($) *</label>
+      <input 
+        type="number" 
+        id="precio" 
+        name="precio" 
+        value="<%= producto.precio %>"
+        step="0.01"
+        min="0"
+        required
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="stock">Stock (Cantidad) *</label>
+      <input 
+        type="number" 
+        id="stock" 
+        name="stock" 
+        value="<%= producto.stock %>"
+        min="0"
+        required
+      >
+    </div>
+
+    <% if (producto.ruta_img) { %>
+      <div class="form-group full-width">
+        <label>Imagen Actual</label>
+        <img src="<%= producto.ruta_img %>" alt="<%= producto.nombre %>" 
+             style="max-width: 200px; border-radius: 4px;">
+      </div>
+    <% } %>
+
+    <button type="submit" class="btn-submit">
+      ✅ Guardar Cambios
+    </button>
+    <a href="/admin" class="btn-submit" style="background: #666; text-align: center; text-decoration: none;">
+      ❌ Cancelar
+    </a>
+  </form>
+</div>
+
+<%- include("partials/footer") %>

@@ -1,0 +1,110 @@
+<!-- filepath: src/views/dashboard.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Administración</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+  <header>
+    <h1>Panel de Administración - Medieval Shop</h1>
+  </header>
+
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>Gestión de Productos</h1>
+      <div class="admin-controls">
+        <a href="http://localhost:5173" class="btn-admin btn-back" target="_blank">🛒 Cliente</a>
+        <a href="/admin/crear" class="btn-admin btn-create">➕ Nuevo</a>
+        <a href="#" id="btn-edit" class="btn-admin btn-edit disabled">✏️ Editar</a>
+        <a href="#" id="btn-delete" class="btn-admin btn-delete disabled">🗑️ Eliminar</a>
+      </div>
+    </div>
+
+    <div id="dashboard-items">
+      <% if (productos && productos.length > 0) { %>
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% productos.forEach(prod => { %>
+              <tr class="fila-producto" data-id="<%= prod.id %>">
+                <td>#<%= prod.id %></td>
+                <td>
+                  <img src="<%= prod.ruta_img || '/img/categorias/accesorios.png' %>" 
+                       alt="<%= prod.nombre %>"
+                       style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+                </td>
+                <td><strong style="color: #d4af37;"><%= prod.nombre %></strong></td>
+                <td><small><%= prod.descripcion || '-' %></small></td>
+                <td>$<%= parseFloat(prod.precio || 0).toFixed(2) %></td>
+                <td><%= parseInt(prod.stock || 0) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <div class="empty-state">
+          <p>No hay productos registrados.</p>
+          <a href="/admin/crear" class="btn-admin btn-create">Crear el primer producto</a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <script>
+    let idSeleccionado = null;
+
+    // Seleccionar fila de tabla
+    document.querySelectorAll('.fila-producto').forEach(fila => {
+      fila.addEventListener('click', () => {
+        // Deseleccionar previo
+        const seleccionadoPrevio = document.querySelector('tr.selected');
+        if (seleccionadoPrevio) {
+          seleccionadoPrevio.classList.remove('selected');
+        }
+
+        // Seleccionar nuevo
+        fila.classList.add('selected');
+        idSeleccionado = fila.dataset.id;
+
+        // Habilitar botones
+        document.getElementById('btn-edit').classList.remove('disabled');
+        document.getElementById('btn-delete').classList.remove('disabled');
+
+        // Actualizar enlaces
+        document.getElementById('btn-edit').href = `/admin/editar?id=${idSeleccionado}`;
+        document.getElementById('btn-delete').href = `/admin/eliminar?id=${idSeleccionado}`;
+      });
+    });
+
+    // Prevenir clicks en botones deshabilitados
+    document.getElementById('btn-edit').addEventListener('click', (e) => {
+      if (!idSeleccionado) {
+        e.preventDefault();
+        alert('Selecciona un producto primero');
+      }
+    });
+
+    document.getElementById('btn-delete').addEventListener('click', (e) => {
+      if (!idSeleccionado) {
+        e.preventDefault();
+        alert('Selecciona un producto primero');
+      }
+    });
+  </script>
+</body>
+
+</html>
