@@ -1,48 +1,67 @@
-<!-- filepath: src/views/create.ejs -->
 <%- include("partials/head") %>
 
-  <div class="crud-container">
-    <div class="crud-header">
-      <h1>➕ Crear Nuevo Producto</h1>
-      <a href="/admin" class="btn-admin btn-back">← Volver</a>
-    </div>
-
-    <% if (error) { %>
-      <div style="background: #c62828; color: white; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
-        <strong>❌ Error:</strong>
-        <%= error %>
-      </div>
-      <% } %>
-
-        <form method="POST" action="/admin/crear" class="crud-form">
-          <div class="form-group">
-            <label for="categoria_id">Categoría</label>
-            <select id="categoria_id" name="categoria_id" required>
-              <option value="">Selecciona una categoría</option>
-              <option value="1">Armaduras</option>
-              <option value="2">Accesorios</option>
-              <option value="3">Armas</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="nombre">Nombre del Producto *</label>
-            <input type="text" id="nombre" id="precio" name="precio" placeholder="0.00" step="0.01" min="0" required>
-          </div>
-
-          <div class="form-group">
-            <label for="stock">Stock (Cantidad) *</label>
-            <input type="number" id="stock" name="stock" placeholder="0" min="0" required>
-          </div>
-
-          <button type="submit" class="btn-submit">
-            ✅ Crear Producto
-          </button>
-          <a href="/admin" class="btn-submit" style="background: #666; text-align: center; text-decoration: none;">
-            ❌ Cancelar
-          </a>
-        </form>
+<div class="crud-container">
+  <div class="crud-header">
+    <h1>➕ Crear Nuevo Producto</h1>
+    <a href="/admin" class="btn-admin btn-back">← Volver</a>
   </div>
 
-  <script src="/js/create-product.js"></script>
-  <%- include("partials/footer") %>
+  <% if (error) { %>
+    <div style="background: #c62828; color: white; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+      <strong>❌ Error:</strong>
+      <%= error %>
+    </div>
+  <% } %>
+
+  <form method="POST" action="/admin/crear" class="crud-form">
+    
+    <!-- Categoría -->
+    <div class="form-group">
+      <label for="categoria_id">Categoría *</label>
+      <select id="categoria_id" name="categoria_id" required>
+        <option value="">Selecciona una categoría</option>
+        <% if (categorias && categorias.length > 0) { %>
+          <% categorias.forEach(cat => { %>
+            <option value="<%= cat.id %>"><%= cat.nombre %></option>
+          <% }); %>
+        <% } else { %>
+          <option disabled>No hay categorías disponibles</option>
+        <% } %>
+      </select>
+    </div>
+
+    <!-- Nombre del Producto -->
+    <div class="form-group">
+      <label for="nombre">Nombre del Producto *</label>
+      <input type="text" id="nombre" name="nombre" placeholder="Ej: Espada de Acero" required>
+    </div>
+
+    <!-- Descripción -->
+    <div class="form-group">
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" name="descripcion" placeholder="Describe el producto..." rows="4"></textarea>
+    </div>
+
+    <!-- Precio -->
+    <div class="form-group">
+      <label for="precio">Precio *</label>
+      <input type="number" id="precio" name="precio" placeholder="0.00" step="0.01" min="0" required>
+    </div>
+
+    <!-- Stock -->
+    <div class="form-group">
+      <label for="stock">Stock (Cantidad) *</label>
+      <input type="number" id="stock" name="stock" placeholder="0" min="0" required>
+    </div>
+
+    <!-- Botones -->
+    <button type="submit" class="btn-submit">
+      ✅ Crear Producto
+    </button>
+    <a href="/admin" class="btn-submit" style="background: #666; text-align: center; text-decoration: none;">
+      ❌ Cancelar
+    </a>
+  </form>
+</div>
+
+<%- include("partials/footer") %>

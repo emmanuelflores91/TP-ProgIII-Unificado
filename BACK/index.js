@@ -7,6 +7,7 @@ import { inicializarMiddlewares, manejadorDeErrores } from './src/api/middleware
 import rutasProductos from './src/api/routes/productos.js';
 import rutasVistas from './src/api/routes/views.routes.js';
 import { seleccionarTodosLosProductos } from './src/api/models/product.models.js';
+import { seleccionarTodasLasCategorias} from './src/api/models/categoria.model.js';
 
 // ==========================================
 // CONFIGURACIÓN INICIAL
@@ -75,7 +76,9 @@ app.get('/admin', async (req, res) => {
   try {
     // TODO: Agregar autenticación aquí en el futuro
     const productos = await seleccionarTodosLosProductos();
+    const categorias = await seleccionarTodasLasCategorias();
     res.render('dashboard', { productos });
+    res.render('create', {categorias});
   } catch (error) {
     console.error('❌ Error en GET /admin:', error);
     res.status(500).render('dashboard', { productos: [], error: error.message });

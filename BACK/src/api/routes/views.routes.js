@@ -5,6 +5,7 @@ import {
     eliminarProductoSSR
 } from "../controllers/product.controllers.js";
 import { seleccionarProductoPorId, seleccionarTodosLosProductos } from "../models/product.models.js";
+import { seleccionarTodasLasCategorias } from "../models/categoria.model.js";
 
 const enrutador = Router();
 
@@ -13,9 +14,19 @@ const enrutador = Router();
 // ==========================================
 
 // Vista Crear Producto
-enrutador.get("/admin/crear", (req, res) => {
-    const { error } = req.query;
-    res.render("create", { error: error || null });
+enrutador.get ("/admin/crear", async (req, res) => {
+    try {
+        const { error } = req.query;
+        const categorias = await seleccionarTodasLasCategorias();
+        res.render("create", {
+            error: error || null,
+            categorias : categorias || []
+        });
+    } 
+    catch (error) {
+        console.error("Error al cargar categorías:", error);
+        res.render("create", { error: "Error al cargar categorías", categorias: [] });
+    }
 });
 
 // Vista Editar Producto
